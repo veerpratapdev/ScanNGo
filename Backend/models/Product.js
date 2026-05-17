@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
-
     name: {
         type: String,
         required: true,
@@ -30,14 +29,17 @@ const productSchema = new mongoose.Schema({
     barcode: {
         type: String,
         required: true,
-        unique: true,
     },
 
+    // IMPORTANT 🔥
+    // Product belongs to which shop owner
+    shopOwner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
 }, {
-    timestamps: true
-});
+    timestamps: true,
+})
 
-module.exports = mongoose.model(
-    'Product',
-    productSchema
-)
+module.exports = mongoose.model('Product', productSchema)

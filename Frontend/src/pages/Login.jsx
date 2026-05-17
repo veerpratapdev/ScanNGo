@@ -5,21 +5,18 @@ import toast from 'react-hot-toast'
 import { loginUser } from '../api/authApi'
 
 function Login() {
-
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const handleLogin = async (e) => {
-
     e.preventDefault()
 
     try {
-
       const data = await loginUser({
         email,
-        password
+        password,
       })
 
       localStorage.setItem('token', data.token)
@@ -31,14 +28,13 @@ function Login() {
 
       toast.success('Login Successful')
 
-         if (data.user.role === 'admin') {
-         navigate('/admin')
+      // ROLE BASED LOGIN 🔥
+      if (data.user.role === 'shopOwner') {
+        navigate('/admin')
       } else {
-         navigate('/products')
+        navigate('/products')
       }
-
     } catch (error) {
-
       toast.error(
         error.response?.data?.message || 'Login Failed'
       )
@@ -46,18 +42,16 @@ function Login() {
   }
 
   return (
-
     <div className='min-h-screen bg-blue-50 flex justify-center items-center px-6'>
-
       <form
         onSubmit={handleLogin}
         className='bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md'
       >
-
         <h1 className='text-4xl font-bold text-blue-700 text-center mb-8'>
           Login
         </h1>
 
+        {/* EMAIL */}
         <input
           type='email'
           placeholder='Enter Email'
@@ -66,6 +60,7 @@ function Login() {
           className='w-full border p-4 rounded-xl mb-5'
         />
 
+        {/* PASSWORD */}
         <input
           type='password'
           placeholder='Enter Password'
@@ -74,6 +69,7 @@ function Login() {
           className='w-full border p-4 rounded-xl mb-6'
         />
 
+        {/* BUTTON */}
         <button
           type='submit'
           className='bg-blue-600 hover:bg-blue-700 text-white w-full py-4 rounded-xl font-semibold'
@@ -82,7 +78,6 @@ function Login() {
         </button>
 
         <p className='text-center mt-6 text-gray-600'>
-
           Don't have an account?
 
           <Link
@@ -91,11 +86,8 @@ function Login() {
           >
             Sign Up
           </Link>
-
         </p>
-
       </form>
-
     </div>
   )
 }

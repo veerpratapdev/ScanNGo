@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express')
 
 const {
     createProduct,
@@ -7,19 +7,60 @@ const {
     getProductById,
     deleteProduct,
     updateProduct,
-} = require("../controllers/productController");
+} = require('../controllers/productController')
 
-const router = express.Router();
+// IMPORT MIDDLEWARE 🔥
+const {
+    protect,
+    shopOwnerOnly,
+} = require('../middleware/authMiddleware')
 
-router.get("/test", (req, res) => {
-    res.json({ message: "Product route working" });
-});
+const router = express.Router()
 
-router.get("/barcode/:barcode", getProductByBarcode);
-router.get("/", getProducts);
-router.post("/", createProduct);
-router.get("/:id", getProductById);
-router.put("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
+// TEST ROUTE
+router.get('/test', (req, res) => {
+    res.json({ message: 'Product route working' })
+})
 
-module.exports = router;
+// ================= PUBLIC / PROTECTED =================
+
+// Get all products (logged in users)
+router.get('/', protect, getProducts)
+
+// Get product by barcode
+router.get(
+    '/barcode/:barcode',
+    protect,
+    getProductByBarcode
+)
+
+// Get product by ID
+router.get('/:id', protect, getProductById)
+
+// ================= SHOP OWNER ONLY =================
+
+// Create product
+router.post(
+    '/',
+    protect,
+    shopOwnerOnly,
+    createProduct
+)
+
+// Update product
+router.put(
+    '/:id',
+    protect,
+    shopOwnerOnly,
+    updateProduct
+)
+
+// Delete product
+router.delete(
+    '/:id',
+    protect,
+    shopOwnerOnly,
+    deleteProduct
+)
+
+module.exports = router

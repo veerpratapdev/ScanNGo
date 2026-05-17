@@ -19,8 +19,35 @@ const userSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        enum: ['user', 'admin'],
-        default: 'user',
+        enum: ['customer', 'shopOwner'],
+        default: 'customer',
+    },
+
+    // Shop Details (Only for Shop Owners)
+    shopName: {
+        type: String,
+        default: '',
+    },
+
+    shopAddress: {
+        type: String,
+        default: '',
+    },
+
+    phone: {
+        type: String,
+        default: '',
+    },
+
+    // Optional future enhancement
+    shopLogo: {
+        type: String,
+        default: '',
+    },
+
+    isActive: {
+        type: Boolean,
+        default: true,
     },
 }, {
     timestamps: true,

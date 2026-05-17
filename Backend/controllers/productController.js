@@ -1,25 +1,40 @@
 const Product = require('../models/Product')
 
+// ================= CREATE PRODUCT =================
+
 const createProduct = async(req, res) => {
     try {
-        console.log("BODY DATA:", req.body);
+        console.log('BODY DATA:', req.body)
 
-        const { name, price, category, description, barcode, image } = req.body;
+        const {
+            name,
+            price,
+            category,
+            description,
+            barcode,
+            image,
+        } = req.body
 
+        // Validation
         if (!name || !price || !category || !description || !barcode) {
             return res.status(400).json({
-                message: "All required fields are needed",
-            });
+                message: 'All required fields are needed',
+            })
         }
 
-        const existingProduct = await Product.findOne({ barcode });
+        // Barcode unique per shop owner
+        const existingProduct = await Product.findOne({
+            barcode,
+            shopOwner: req.user._id,
+        })
 
         if (existingProduct) {
             return res.status(400).json({
-                message: "Product with this barcode already exists",
-            });
+                message: 'Product with this barcode already exists',
+            })
         }
 
+        // Create Product
         const product = await Product.create({
             name,
             price,
@@ -27,65 +42,49 @@ const createProduct = async(req, res) => {
             description,
             barcode,
             image,
-        });
+
+            // IMPORTANT
+            shopOwner: req.user._id,
+        })
 
         res.status(201).json({
-            message: "Product Added",
+            message: 'Product Added',
             product,
-        });
+        })
     } catch (error) {
-        console.log("PRODUCT ADD ERROR:", error);
+        console.log('PRODUCT ADD ERROR:', error)
 
         res.status(500).json({
             message: error.message,
-        });
+        })
     }
-};
+}
+
+// ================= GET PRODUCTS =================
 
 const getProducts = async(req, res) => {
-
     try {
-
-        const products = await Product.find()
+        // Only owner's products
+        const products = await Product.find({
+            shopOwner: req.user._id,
+        })
 
         res.status(200).json(products)
-
     } catch (error) {
-
         res.status(500).json({
-            message: error.message
+            message: error.message,
         })
     }
 }
+
+// ================= GET PRODUCT BY BARCODE =================
 
 const getProductByBarcode = async(req, res) => {
-
     try {
-
         const product = await Product.findOne({
-            barcode: req.params.barcode
+            barcode: req.params.barcode,
+            shopOwner: req.user._id,
         })
-
-        if (!product) {
-
-            return res.status(404).json({
-                message: 'Product not found'
-            })
-        }
-
-        res.status(200).json(product)
-
-    } catch (error) {
-
-        res.status(500).json({
-            message: 'Server Error'
-        })
-    }
-}
-
-const getProductById = async(req, res) => {
-    try {
-        const product = await Product.findById(req.params.id)
 
         if (!product) {
             return res.status(404).json({
@@ -101,9 +100,37 @@ const getProductById = async(req, res) => {
     }
 }
 
+// ================= GET PRODUCT BY ID =================
+
+const getProductById = async(req, res) => {
+    try {
+        const product = await Product.findOne({
+            _id: req.params.id,
+            shopOwner: req.user._id,
+        })
+
+        if (!product) {
+            return res.status(404).json({
+                message: 'Product not found',
+            })
+        }
+
+        res.status(200).json(product)
+    } catch (error) {
+        res.status(500).json({
+            message: 'Server Error',
+        })
+    }
+}
+
+// ================= DELETE PRODUCT =================
+
 const deleteProduct = async(req, res) => {
     try {
-        const product = await Product.findById(req.params.id)
+        const product = await Product.findOne({
+            _id: req.params.id,
+            shopOwner: req.user._id,
+        })
 
         if (!product) {
             return res.status(404).json({
@@ -125,16 +152,18 @@ const deleteProduct = async(req, res) => {
     }
 }
 
+// ================= UPDATE PRODUCT =================
+
 const updateProduct = async(req, res) => {
-
     try {
-
-        const product = await Product.findById(req.params.id)
+        const product = await Product.findOne({
+            _id: req.params.id,
+            shopOwner: req.user._id,
+        })
 
         if (!product) {
-
             return res.status(404).json({
-                message: 'Product not found'
+                message: 'Product not found',
             })
         }
 
@@ -148,13 +177,11 @@ const updateProduct = async(req, res) => {
         const updatedProduct = await product.save()
 
         res.status(200).json(updatedProduct)
-
     } catch (error) {
-
         console.log(error)
 
         res.status(500).json({
-            message: 'Update Failed'
+            message: 'Update Failed',
         })
     }
 }

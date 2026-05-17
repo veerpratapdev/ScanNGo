@@ -20,6 +20,8 @@ const orderSchema = new mongoose.Schema({
         name: String,
         price: Number,
         quantity: Number,
+        image: String,
+        barcode: String,
     }, ],
 
     totalPrice: {
@@ -32,8 +34,24 @@ const orderSchema = new mongoose.Schema({
         required: true,
     },
 
+    // IMPORTANT 🔥
+    // Which shop owner received this order
+    shopOwner: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+
     status: {
         type: String,
+        enum: [
+            'Pending',
+            'Confirmed',
+            'Preparing',
+            'Out for Delivery',
+            'Delivered',
+            'Cancelled',
+        ],
         default: 'Pending',
     },
 }, {

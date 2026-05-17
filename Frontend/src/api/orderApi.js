@@ -1,29 +1,82 @@
 import axios from 'axios'
 
-const API_URL = 'https://name-scanngo-backend.onrender.com/api/orders'
+const API_URL =
+    'https://name-scanngo-backend.onrender.com/api/orders'
 
-export const createOrder = async(orderData) => {
-    const response = await axios.post(API_URL, orderData)
+// ================= GET TOKEN =================
+
+const getToken = () => {
+    return localStorage.getItem('token')
+}
+
+// ================= CREATE ORDER =================
+
+export const createOrder = async(
+    orderData
+) => {
+    const token = getToken()
+
+    const response = await axios.post(
+        API_URL,
+        orderData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    )
 
     return response.data
 }
+
+// ================= GET ALL ORDERS =================
 
 export const getOrders = async() => {
-    const response = await axios.get(API_URL)
+    const token = getToken()
 
-    return response.data
-}
-
-export const getMyOrders = async(email) => {
-    const response = await axios.get(`${API_URL}/my/${email}`)
-
-    return response.data
-}
-
-export const updateOrderStatus = async(id, status) => {
-    const response = await axios.put(`${API_URL}/${id}`, {
-        status,
+    const response = await axios.get(API_URL, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     })
+
+    return response.data
+}
+
+// ================= GET MY ORDERS =================
+
+export const getMyOrders = async(
+    email
+) => {
+    const token = getToken()
+
+    const response = await axios.get(
+        `${API_URL}/my/${email}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    )
+
+    return response.data
+}
+
+// ================= UPDATE ORDER STATUS =================
+
+export const updateOrderStatus = async(
+    id,
+    status
+) => {
+    const token = getToken()
+
+    const response = await axios.put(
+        `${API_URL}/${id}`, {
+            status,
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+    )
 
     return response.data
 }
