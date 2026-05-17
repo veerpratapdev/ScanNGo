@@ -31,7 +31,11 @@ function Login() {
 
       toast.success('Login Successful')
 
-      navigate('/products')
+         if (data.user.role === 'admin') {
+         navigate('/admin')
+      } else {
+         navigate('/products')
+      }
 
     } catch (error) {
 

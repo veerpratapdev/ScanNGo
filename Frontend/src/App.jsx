@@ -19,6 +19,7 @@ import Profile from './pages/Profile'
 import Orders from './pages/Orders'
 import MyOrders from './pages/MyOrders'
 import Admin from './pages/Admin'
+import AdminRoute from './components/AdminRoute'
 
 function App() {
 
@@ -49,18 +50,18 @@ function App() {
 <Route
   path='/admin'
   element={
-    <ProtectedRoute>
+    <AdminRoute>
       <Admin />
-    </ProtectedRoute>
+    </AdminRoute>
   }
 />
 
 <Route
   path='/admin/products'
   element={
-    <ProtectedRoute>
+    <AdminRoute>
       <ProductList />
-    </ProtectedRoute>
+    </AdminRoute>
   }
 />
 
@@ -76,9 +77,9 @@ function App() {
 <Route
   path='/admin/orders'
   element={
-    <ProtectedRoute>
+    <AdminRoute>
       <Orders />
-    </ProtectedRoute>
+    </AdminRoute>
   }
 />
 
@@ -103,9 +104,9 @@ function App() {
 <Route
   path='/add-product'
   element={
-    <ProtectedRoute>
+    <AdminRoute>
       <AddProduct />
-    </ProtectedRoute>
+    </AdminRoute>
   }
 />
 

@@ -14,16 +14,26 @@ function Register() {
     e.preventDefault()
 
     try {
-      await registerUser({
+      const data = await registerUser({
         name,
         email,
-        password
+        password,
       })
+
+      localStorage.setItem('token', data.token)
+
+      localStorage.setItem(
+        'user',
+        JSON.stringify(data.user)
+      )
 
       toast.success('Account Created Successfully')
 
-      navigate('/login')
-
+      if (data.user.role === 'admin') {
+        navigate('/admin')
+      } else {
+        navigate('/products')
+      }
     } catch (error) {
       toast.error(
         error.response?.data?.message || 'Register Failed'
@@ -33,12 +43,10 @@ function Register() {
 
   return (
     <div className='min-h-screen bg-blue-50 flex justify-center items-center px-6'>
-
       <form
         onSubmit={handleRegister}
         className='bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md'
       >
-
         <h1 className='text-4xl font-bold text-blue-700 text-center mb-8'>
           Create Account
         </h1>
@@ -84,9 +92,7 @@ function Register() {
             Login
           </Link>
         </p>
-
       </form>
-
     </div>
   )
 }

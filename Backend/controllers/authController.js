@@ -8,7 +8,7 @@ const registerUser = async(req, res) => {
 
         if (!name || !email || !password) {
             return res.status(400).json({
-                message: 'Please fill all fields'
+                message: 'Please fill all fields',
             })
         }
 
@@ -16,7 +16,7 @@ const registerUser = async(req, res) => {
 
         if (userExists) {
             return res.status(400).json({
-                message: 'User already exists'
+                message: 'User already exists',
             })
         }
 
@@ -25,18 +25,29 @@ const registerUser = async(req, res) => {
         const user = await User.create({
             name,
             email,
-            password: hashedPassword
+            password: hashedPassword,
         })
+
+        const token = jwt.sign({ id: user._id },
+            'scanngo_secret_key', { expiresIn: '7d' }
+        )
 
         res.status(201).json({
             message: 'User registered successfully',
-            user
-        })
 
+            token,
+
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+            },
+        })
     } catch (error) {
         res.status(500).json({
             message: 'Server error',
-            error: error.message
+            error: error.message,
         })
     }
 }
@@ -47,7 +58,7 @@ const loginUser = async(req, res) => {
 
         if (!email || !password) {
             return res.status(400).json({
-                message: 'Please enter email and password'
+                message: 'Please enter email and password',
             })
         }
 
@@ -55,15 +66,18 @@ const loginUser = async(req, res) => {
 
         if (!user) {
             return res.status(400).json({
-                message: 'Invalid email or password'
+                message: 'Invalid email or password',
             })
         }
 
-        const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await bcrypt.compare(
+            password,
+            user.password
+        )
 
         if (!isMatch) {
             return res.status(400).json({
-                message: 'Invalid email or password'
+                message: 'Invalid email or password',
             })
         }
 
@@ -73,23 +87,25 @@ const loginUser = async(req, res) => {
 
         res.status(200).json({
             message: 'Login successful',
+
             token,
+
             user: {
                 id: user._id,
                 name: user.name,
-                email: user.email
-            }
+                email: user.email,
+                role: user.role,
+            },
         })
-
     } catch (error) {
         res.status(500).json({
             message: 'Server error',
-            error: error.message
+            error: error.message,
         })
     }
 }
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
 }

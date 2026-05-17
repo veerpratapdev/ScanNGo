@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/api/orders'
+const API_URL = 'https://name-scanngo-backend.onrender.com/api/orders'
 
 export const createOrder = async(orderData) => {
     const response = await axios.post(API_URL, orderData)

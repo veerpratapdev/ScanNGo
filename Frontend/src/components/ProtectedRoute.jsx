@@ -1,14 +1,17 @@
 import { Navigate } from 'react-router-dom'
 
-function ProtectedRoute({ children }) {
+const AdminRoute = ({ children }) => {
+  const user = JSON.parse(localStorage.getItem('user'))
 
-  const token = localStorage.getItem('token')
-
-  if (!token) {
+  if (!user) {
     return <Navigate to='/login' />
+  }
+
+  if (user.role !== 'admin') {
+    return <Navigate to='/products' />
   }
 
   return children
 }
 
-export default ProtectedRoute
+export default AdminRoute

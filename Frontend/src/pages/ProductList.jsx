@@ -17,7 +17,7 @@ function ProductList() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/products')
+      const res = await fetch('https://name-scanngo-backend.onrender.com/api/products')
       const result = await res.json()
 
       if (res.ok) {
@@ -41,7 +41,7 @@ function ProductList() {
 
       const token = getToken()
 
-      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const res = await fetch(`https://name-scanngo-backend.onrender.com/api/products/${id}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
