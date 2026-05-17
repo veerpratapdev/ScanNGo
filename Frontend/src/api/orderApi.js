@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API_URL =
-    'https://name-scanngo-backend.onrender.com/api/orders'
+    'https://scanngo-iwua.onrender.com/api/orders'
 
 // ================= GET TOKEN =================
 

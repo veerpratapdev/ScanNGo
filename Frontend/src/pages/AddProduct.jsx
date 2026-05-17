@@ -123,7 +123,7 @@ function AddProduct() {
     const data = new FormData()
     data.append('image', imageFile)
 
-    const res = await fetch('https://name-scanngo-backend.onrender.com/api/upload/image', {
+    const res = await fetch('https://scanngo-iwua.onrender.com/api/upload/image', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -168,7 +168,7 @@ function AddProduct() {
         image: imageUrl,
       }
 
-      const res = await fetch('https://name-scanngo-backend.onrender.com/api/products', {
+      const res = await fetch('https://scanngo-iwua.onrender.com/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

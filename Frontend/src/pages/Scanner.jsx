@@ -33,7 +33,7 @@ function Scanner() {
   const fetchProduct = async (barcode) => {
     try {
       const res = await fetch(
-        `https://name-scanngo-backend.onrender.com/api/products/barcode/${barcode}`
+        `https://scanngo-iwua.onrender.com/api/products/barcode/${barcode}`
       )
 
       const result = await res.json()

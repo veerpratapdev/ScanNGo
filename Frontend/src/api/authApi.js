@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'https://name-scanngo-backend.onrender.com/api/auth'
+const API_URL = 'https://scanngo-iwua.onrender.com/api/auth'
 
 export const registerUser = async(userData) => {
     const response = await axios.post(`${API_URL}/register`, userData)

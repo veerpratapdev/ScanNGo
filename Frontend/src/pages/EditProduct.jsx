@@ -30,7 +30,7 @@ function EditProduct() {
 
   const fetchProduct = async () => {
     try {
-      const res = await fetch(`https://name-scanngo-backend.onrender.com/api/products/${id}`)
+      const res = await fetch(`https://scanngo-iwua.onrender.com/api/products/${id}`)
       const result = await res.json()
 
       if (res.ok) {
@@ -68,7 +68,7 @@ function EditProduct() {
 
       const token = getToken()
 
-      const res = await fetch(`https://name-scanngo-backend.onrender.com/api/products/${id}`, {
+      const res = await fetch(`https://scanngo-iwua.onrender.com/api/products/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

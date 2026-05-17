@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'https://name-scanngo-backend.onrender.com/api/upload'
+const API_URL = 'https://scanngo-iwua.onrender.com/api/upload'
 
 export const uploadImage = async(imageFile) => {
 
